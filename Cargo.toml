@@ -1,6 +1,6 @@
 [package]
 name = "dc"
-version = "0.7.6"
+version = "0.7.7"
 edition = "2024"
 authors = ["Artur Gwoździowski"]
 
@@ -49,3 +49,7 @@ path = "src/camera.rs"
 [[bin]]
 name = "camera2"
 path = "src/camera2.rs"
+
+[[bin]]
+name = "rpicam"
+path = "src/rpicam.rs"

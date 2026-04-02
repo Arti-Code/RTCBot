@@ -47,17 +47,16 @@ fn main() -> Result<()> {
 
 async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
         let mut media = MediaEngine::default();
-        media.register_default_codecs()?;
-        let (gather_tx, mut gather_rx) = channel::<()>(1);
-        let (done_tx, mut done_rx) = channel::<()>(1);
-        
+        media.register_default_codecs()?;   
         let runtime = default_runtime()
-        .ok_or_else(|| anyhow::anyhow!("no async runtime found"))?;
-        
-        let gather_tx2 = gather_tx.clone();
-        
+        .ok_or_else(|| anyhow::anyhow!("no async runtime found"))?;         
         let registry = register_default_interceptors(Registry::new(), &mut media)?;
         
+        let (connected_tx, mut connected_rx) = channel::<()>(1);
+        let (gather_tx, mut gather_rx) = channel::<()>(1);
+        let (done_tx, mut done_rx) = channel::<()>(1);
+        //let gather_tx2 = gather_tx.clone(); 
+
         let pc = PeerConnectionBuilder::new()
         .with_configuration(
             RTCConfigurationBuilder::new()
@@ -91,8 +90,9 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
         .with_interceptor_registry(registry)
         .with_handler(Arc::new(AnswerHandler {
             runtime: runtime.clone(),
-            gather_complete_tx: gather_tx2.clone(),
-            done_tx: done_tx.clone(),
+            gather_complete_tx: gather_tx,
+            connected_tx: connected_tx,
+            done_tx,
         }))
         .with_runtime(runtime.clone())
         .with_udp_addrs(vec![format!("{}:0", get_local_ip())])
@@ -105,9 +105,8 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
         let sd =signal_client.wait_data().await?;
         println!("offer received from {}", sd.sender);
         let offer_sdp = serde_json::from_str::<RTCSessionDescription>(&sd.description)?;
-        println!("offer sdp parsed, setting remote description...");
         pc.set_remote_description(offer_sdp).await?;
-        println!("set remote sdp, creating answer...");
+        println!("creating answer...");
         let answer = pc.create_answer(None).await?;
         pc.set_local_description(answer).await?;
         gather_rx.recv().await;
@@ -115,7 +114,10 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
         .ok_or_else(|| anyhow::anyhow!("no local description"))?;
         let payload = serde_json::to_string(&answer_sdp)?;
         signal_client.send_data(&sd.sender, payload, DescriptionType::Answer).await?;
-        println!("sent answer to {}", sd.sender);
+        println!("answer sent to {}", sd.sender);
+        println!("waiting for connection...");
+        connected_rx.recv().await;
+        
         futures::select! {
             _ = done_rx.recv().fuse() => {
                 println!("{}", "data channel closed".to_string().red().bold());

@@ -69,7 +69,7 @@ impl PeerConnectionEventHandler for CameraHandler {
             },
             RTCPeerConnectionState::New => {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_blue(), state.to_string().bold().bright_blue());
-                let _ = self.connected_tx.try_send(());
+                //let _ = self.connected_tx.try_send(());
             },
             RTCPeerConnectionState::Connecting => {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_green(), state.to_string().bold().bright_green());
@@ -230,6 +230,7 @@ impl PeerConnectionEventHandler for OfferHandler {
 pub struct AnswerHandler {
     pub runtime: Arc<dyn Runtime>,
     pub gather_complete_tx: Sender<()>,
+    pub connected_tx: Sender<()>,
     pub done_tx: Sender<()>,
 }
 
@@ -274,6 +275,7 @@ impl PeerConnectionEventHandler for AnswerHandler {
             },
             RTCPeerConnectionState::Connected => {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().green(), state.to_string().bold().green());
+                let _ = self.connected_tx.try_send(());
             },
             RTCPeerConnectionState::Closed => {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().yellow(), state.to_string().bold().yellow());
