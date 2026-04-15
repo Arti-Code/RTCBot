@@ -205,22 +205,23 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
             _ = done_rx.recv().fuse() => {
                 println!("{}", "data channel closed".to_string().red().bold());
                 pc.close().await?;
-                
+                camera_starter.write_all(b"CAM STOP")?;
                 return Ok(true);
             }
             _ = ctrlc_rx.recv().fuse() => {
+                camera_starter.write_all(b"CAM STOP")?;
                 println!("{}", "CTRL+C from user".to_string().bold().yellow());
                 pc.close().await?;
                 return Ok(false)
                 //break;
             },
             _ = fwd_done_rx.recv().fuse() => {
+                camera_starter.write_all(b"CAM STOP")?;
                 println!("{}", "RTP forwarding ended".to_string().bold());
                 pc.close().await?;
                 return Ok(true);
             },
         }
-        _ = camera_starter.write_all(b"CAM STOP");
 }
 
 fn display_init() {

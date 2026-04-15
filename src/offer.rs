@@ -106,6 +106,7 @@ pub async fn process_offerer(name: &str, target: &str) -> anyhow::Result<bool> {
     }));
 
     let url = "ws://yamanote.proxy.rlwy.net:25134";
+    //let url = "ws://192.168.0.97:25134";
     let mut signal_client = SignalClient::new(&name, url);
     signal_client.connect().await?;
     let offer = pc.create_offer(None).await?;

@@ -66,6 +66,7 @@ pub async fn process_answerer(name: &str, restart: bool) -> anyhow::Result<bool>
     .build().await?;
 
     let url = "ws://yamanote.proxy.rlwy.net:25134";
+    //let url = "ws://192.168.0.97:25134";
     let mut signal_client = SignalClient::new(&name, url);
     signal_client.connect().await?;
     println!("{}", "connection ready!".to_string().blue().bold());
