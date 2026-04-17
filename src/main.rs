@@ -64,7 +64,7 @@ async fn async_main() -> Result<()> {
 fn display_init() {
     let ver = env!("CARGO_PKG_VERSION").to_string();
     let authors = env!("CARGO_PKG_AUTHORS").to_string();
-    let title = format!("--== WebRTC Client ==--");
+    let title = format!("--== RTCBot ==--");
     let date = "2026y".to_string();
     println!("");
     println!("{}", title.underline().bold().green());

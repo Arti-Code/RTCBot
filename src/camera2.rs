@@ -282,7 +282,7 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
 fn display_init() {
     let ver = env!("CARGO_PKG_VERSION").to_string();
     let authors = env!("CARGO_PKG_AUTHORS").to_string();
-    let title = format!("-= WebRTC Camera2 =-");
+    let title = format!("-= RTCBot Camera2 =-");
     let date = "2026y".to_string();
     println!("");
     println!("{}", title.underline().bold().green());
