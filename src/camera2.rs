@@ -15,7 +15,7 @@ use webrtc::{
         MediaEngine, PeerConnection, PeerConnectionBuilder, RTCConfigurationBuilder, RTCIceServer, RTCSessionDescription, Registry, register_default_interceptors
     }, runtime::{channel, default_runtime}
 };
-use dc::{event_handler::*, util::get_local_ip};
+use rtcbot::{event_handler::*, util::get_local_ip};
 use tokio::sync::mpsc::{self, Receiver};
 
 

@@ -9,7 +9,7 @@ use futures::FutureExt;
 use webrtc::{peer_connection::{
         MediaEngine, PeerConnection, PeerConnectionBuilder, RTCConfigurationBuilder, RTCIceServer, RTCSessionDescription, Registry, register_default_interceptors
     }, runtime::{channel, default_runtime}};
-use dc::{config::*, event_handler::*, util::get_local_ip};
+use rtcbot::{config::*, event_handler::*, util::get_local_ip};
 use tokio::sync::mpsc::{self, Receiver};
 
 fn main() -> Result<()> {

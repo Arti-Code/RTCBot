@@ -4,7 +4,7 @@ use clap::Parser;
 use env_logger;
 use env_logger::Target;
 use std::{fs, fs::OpenOptions, io::Write as IoWrite, str::FromStr};
-use dc::util::*;
+use rtcbot::util::*;
 use futures::FutureExt;
 use rtc::interceptor::Registry;
 use rtc::media_stream::MediaStreamTrack;

@@ -6,7 +6,7 @@ use colored::*;
 use signaler::client::Client as SignalClient;
 use futures::FutureExt;
 use webrtc::runtime::channel;
-use dc::config::*;
+use rtcbot::config::*;
 
 fn main() -> Result<()> {
         block_on(async_main())

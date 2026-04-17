@@ -1,11 +1,11 @@
-use dc::config::load_config;
+use rtcbot::config::load_config;
 use dialoguer::theme::ColorfulTheme;
 use anyhow::Result;
 use webrtc::runtime::block_on;
 use dialoguer::*;
 use colored::*;
-use dc::offer::process_offerer;
-use dc::answer::process_answerer;
+use rtcbot::offer::process_offerer;
+use rtcbot::answer::process_answerer;
 
 fn main() -> Result<()> {
     block_on(async_main())

@@ -17,9 +17,9 @@ use futures::FutureExt;
 use webrtc::{media_stream::track_local::static_rtp::TrackLocalStaticRTP, peer_connection::{
     MediaEngine, PeerConnection, PeerConnectionBuilder, RTCConfigurationBuilder, RTCIceServer, RTCSessionDescription, Registry, register_default_interceptors
 }, runtime::{channel, default_runtime}};
-use dc::{event_handler::*, util::get_local_ip};
+use rtcbot::{event_handler::*, util::get_local_ip};
 use tokio::sync::mpsc::{self, Receiver};
-use dc::config::*;
+use rtcbot::config::*;
 
 
 const VIDEO_LISTENER: &'static str = "127.0.0.1:5008";
