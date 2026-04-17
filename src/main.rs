@@ -1,3 +1,4 @@
+use dc::config::load_config;
 use dialoguer::theme::ColorfulTheme;
 use anyhow::Result;
 use webrtc::runtime::block_on;
@@ -17,7 +18,9 @@ async fn async_main() -> Result<()> {
     })?; */
 
     display_init();
-
+    let configuration = load_config()?;
+    let addr = configuration.signaling_server.unwrap();
+    println!("{}{}", "server address: ".to_string().bold().yellow(), addr.bold().yellow());
     tokio::time::sleep(std::time::Duration::from_millis(1000)).await;
     let sdp_modes = &[
         "ANSWER",
@@ -35,7 +38,7 @@ async fn async_main() -> Result<()> {
             .default("ROBOT".to_string()).allow_empty(false).show_default(true)
             .interact_text().unwrap();
             loop { 
-                match process_offerer(&name, &target).await? {
+                match process_offerer(&name, &target, &addr).await? {
                     true => continue,
                     false => break,
                 }
@@ -47,7 +50,7 @@ async fn async_main() -> Result<()> {
             .interact_text().unwrap();
             let restart: bool = false;
             loop {
-                match process_answerer(&name, restart).await? {
+                match process_answerer(&name, restart, &addr).await? {
                     true => continue,
                     false => break,
                 }

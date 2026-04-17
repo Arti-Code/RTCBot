@@ -6,6 +6,7 @@ use colored::*;
 use signaler::client::Client as SignalClient;
 use futures::FutureExt;
 use webrtc::runtime::channel;
+use dc::config::*;
 
 fn main() -> Result<()> {
         block_on(async_main())
@@ -17,14 +18,17 @@ async fn async_main() -> Result<()> {
         let _ = ctrlc_tx.try_send(());
     })?;
     display_init();
+    let configuration = load_config()?;
+    let url = configuration.signaling_server.unwrap();
+    println!("{}{}", "server address: ".to_string().bold().yellow(), url.bold().yellow());
     tokio::time::sleep(std::time::Duration::from_millis(500)).await;
     let name: String = Input::with_theme(&ColorfulTheme::default()).with_prompt("enter name")
     .default("LOGGER".to_string()).allow_empty(false).show_default(true)
     .interact_text().unwrap();
 
     let (_done_tx, mut done_rx) = channel::<()>(1);
-    let url = "ws://yamanote.proxy.rlwy.net:25134";
-    let mut signal_client = SignalClient::new(&name, url);
+    //let url = "ws://yamanote.proxy.rlwy.net:25134";
+    let mut signal_client = SignalClient::new(&name, &url);
     signal_client.connect().await?;
     signal_client.set_logger().await?;
     println!("{}", "connected as a logger".to_string().blue().bold());

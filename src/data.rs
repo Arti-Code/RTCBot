@@ -9,7 +9,7 @@ use futures::FutureExt;
 use webrtc::{peer_connection::{
         MediaEngine, PeerConnection, PeerConnectionBuilder, RTCConfigurationBuilder, RTCIceServer, RTCSessionDescription, Registry, register_default_interceptors
     }, runtime::{channel, default_runtime}};
-use dc::{event_handler::*, util::get_local_ip};
+use dc::{config::*, event_handler::*, util::get_local_ip};
 use tokio::sync::mpsc::{self, Receiver};
 
 fn main() -> Result<()> {
@@ -46,6 +46,10 @@ fn main() -> Result<()> {
 }
 
 async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
+        let configuration = load_config()?;
+        let url = configuration.signaling_server.unwrap();
+        println!("{}{}", "server address: ".to_string().bold().yellow(), url.bold().yellow());
+
         let mut media = MediaEngine::default();
         media.register_default_codecs()?;   
         let runtime = default_runtime()

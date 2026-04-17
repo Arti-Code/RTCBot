@@ -31,7 +31,7 @@ impl PeerConnectionEventHandler for CameraHandler {
             RTCSignalingState::Closed => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
             RTCSignalingState::HaveLocalOffer => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
             RTCSignalingState::HaveRemoteOffer => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
-            RTCSignalingState::Stable => println!("{}{}", "[SIGNALING STATE]: ".to_string().green(), state.to_string().green()),
+            RTCSignalingState::Stable => println!("{}{}", "[SIGNALING STATE]: ".to_string().cyan(), state.to_string().cyan()),
             _ => {},
         }
     }
@@ -60,7 +60,7 @@ impl PeerConnectionEventHandler for CameraHandler {
                 let _ = self.done_tx.try_send(());
             },
             RTCPeerConnectionState::Connected => {
-                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().green(), state.to_string().bold().green());
+                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_green(), state.to_string().bold().bright_green());
                 let _ = self.connected_tx.try_send(());
             },
             RTCPeerConnectionState::Closed => {
@@ -72,7 +72,7 @@ impl PeerConnectionEventHandler for CameraHandler {
                 //let _ = self.connected_tx.try_send(());
             },
             RTCPeerConnectionState::Connecting => {
-                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_green(), state.to_string().bold().bright_green());
+                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string(), state.to_string());
                 //let _ = self.connected_tx.try_send(());
             },
             RTCPeerConnectionState::Unspecified => {
@@ -169,7 +169,7 @@ impl PeerConnectionEventHandler for OfferHandler {
             RTCSignalingState::Closed => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
             RTCSignalingState::HaveLocalOffer => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
             RTCSignalingState::HaveRemoteOffer => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
-            RTCSignalingState::Stable => println!("{}{}", "[SIGNALING STATE]: ".to_string().green(), state.to_string().green()),
+            RTCSignalingState::Stable => println!("{}{}", "[SIGNALING STATE]: ".to_string().cyan(), state.to_string().cyan()),
             _ => {},
         }
     }
@@ -186,13 +186,6 @@ impl PeerConnectionEventHandler for OfferHandler {
         }
     }
 
-    /* async fn on_ice_gathering_state_change(&self, state: RTCIceGatheringState) {
-        println!("ice gathering state: {state}");
-        if state == RTCIceGatheringState::Complete {
-            let _ = self.gather_complete_tx.try_send(());
-        }
-    } */
-
     async fn on_connection_state_change(&self, state: RTCPeerConnectionState) {
         let state_info: String;
         match state {
@@ -205,7 +198,7 @@ impl PeerConnectionEventHandler for OfferHandler {
                 let _ = self.done_tx.try_send(());
             },
             RTCPeerConnectionState::Connected => {
-                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().green(), state.to_string().bold().green());
+                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_green(), state.to_string().bold().bright_green());
             },
             RTCPeerConnectionState::Closed => {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().yellow(), state.to_string().bold().yellow());
@@ -215,7 +208,7 @@ impl PeerConnectionEventHandler for OfferHandler {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_blue(), state.to_string().bold().bright_blue());
             },
             RTCPeerConnectionState::Connecting => {
-                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_green(), state.to_string().bold().bright_green());
+                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string(), state.to_string());
             },
             RTCPeerConnectionState::Unspecified => {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_yellow(), state.to_string().bold().bright_yellow());
@@ -246,7 +239,7 @@ impl PeerConnectionEventHandler for AnswerHandler {
             RTCSignalingState::Closed => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
             RTCSignalingState::HaveLocalOffer => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
             RTCSignalingState::HaveRemoteOffer => println!("{}{}", "[SIGNALING STATE]: ".to_string(), state.to_string()),
-            RTCSignalingState::Stable => println!("{}{}", "[SIGNALING STATE]: ".to_string().green(), state.to_string().green()),
+            RTCSignalingState::Stable => println!("{}{}", "[SIGNALING STATE]: ".to_string().cyan(), state.to_string().cyan()),
             _ => {},
         }
     }
@@ -274,7 +267,7 @@ impl PeerConnectionEventHandler for AnswerHandler {
                 let _ = self.done_tx.try_send(());
             },
             RTCPeerConnectionState::Connected => {
-                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().green(), state.to_string().bold().green());
+                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_green(), state.to_string().bold().bright_green());
                 let _ = self.connected_tx.try_send(());
             },
             RTCPeerConnectionState::Closed => {
@@ -285,7 +278,7 @@ impl PeerConnectionEventHandler for AnswerHandler {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_blue(), state.to_string().bold().bright_blue());
             },
             RTCPeerConnectionState::Connecting => {
-                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_green(), state.to_string().bold().bright_green());
+                state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string(), state.to_string());
             },
             RTCPeerConnectionState::Unspecified => {
                 state_info = format!("{}{}", "[PEER CONNECTION]: ".to_string().bold().bright_yellow(), state.to_string().bold().bright_yellow());

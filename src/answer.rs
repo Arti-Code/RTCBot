@@ -8,7 +8,7 @@ use crate::util::get_local_ip;
 use crate::event_handler::*;
 use colored::*;
 
-pub async fn process_answerer(name: &str, restart: bool) -> anyhow::Result<bool> {
+pub async fn process_answerer(name: &str, restart: bool, server_addr: &str) -> anyhow::Result<bool> {
     let mut media = MediaEngine::default();
     media.register_default_codecs()?;
     let (ctrlc_tx, mut ctrlc_rx) = channel::<()>(1);
@@ -65,9 +65,9 @@ pub async fn process_answerer(name: &str, restart: bool) -> anyhow::Result<bool>
     .with_udp_addrs(vec![format!("{}:0", get_local_ip())])
     .build().await?;
 
-    let url = "ws://yamanote.proxy.rlwy.net:25134";
+    //let url = "ws://yamanote.proxy.rlwy.net:25134";
     //let url = "ws://192.168.0.97:25134";
-    let mut signal_client = SignalClient::new(&name, url);
+    let mut signal_client = SignalClient::new(&name, server_addr);
     signal_client.connect().await?;
     println!("{}", "connection ready!".to_string().blue().bold());
     let sd =signal_client.wait_data().await?;

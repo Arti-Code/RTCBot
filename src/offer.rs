@@ -13,7 +13,7 @@ use crate::event_handler::*;
 use colored::*;
 
 
-pub async fn process_offerer(name: &str, target: &str) -> anyhow::Result<bool> {
+pub async fn process_offerer(name: &str, target: &str, server_addr: &str) -> anyhow::Result<bool> {
     let mut media = MediaEngine::default();
     media.register_default_codecs()?;
     let (ctrlc_tx, mut ctrlc_rx) = channel::<()>(1);
@@ -105,9 +105,9 @@ pub async fn process_offerer(name: &str, target: &str) -> anyhow::Result<bool> {
         println!("{}", "exit datachannel loop".to_string().yellow().bold());
     }));
 
-    let url = "ws://yamanote.proxy.rlwy.net:25134";
+    //let url = "ws://yamanote.proxy.rlwy.net:25134";
     //let url = "ws://192.168.0.97:25134";
-    let mut signal_client = SignalClient::new(&name, url);
+    let mut signal_client = SignalClient::new(&name, server_addr);
     signal_client.connect().await?;
     let offer = pc.create_offer(None).await?;
     pc.set_local_description(offer).await?;

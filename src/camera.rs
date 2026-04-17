@@ -19,6 +19,8 @@ use webrtc::{media_stream::track_local::static_rtp::TrackLocalStaticRTP, peer_co
 }, runtime::{channel, default_runtime}};
 use dc::{event_handler::*, util::get_local_ip};
 use tokio::sync::mpsc::{self, Receiver};
+use dc::config::*;
+
 
 const VIDEO_LISTENER: &'static str = "127.0.0.1:5008";
 
@@ -54,6 +56,10 @@ fn main() -> Result<()> {
 }
 
 async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
+        let configuration = load_config()?;
+        let url = configuration.signaling_server.unwrap();
+        println!("{}{}", "server address: ".to_string().bold().yellow(), url.bold().yellow());
+
         let mut media_engine = MediaEngine::default();
         let video_codec = RTCRtpCodec {
             mime_type: MIME_TYPE_VP8.to_owned(),
@@ -145,8 +151,8 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
 
         pc.add_track(Arc::clone(&video_track) as Arc<dyn TrackLocal>).await?;
 
-        let url = "ws://yamanote.proxy.rlwy.net:25134";
-        let mut signal_client = SignalClient::new(&name, url);
+        //let url = "ws://yamanote.proxy.rlwy.net:25134";
+        let mut signal_client = SignalClient::new(&name, &url);
         signal_client.connect().await?;
         println!("{}", "connection ready!".to_string().blue().bold());
         let sd0 =signal_client.wait_data().await?;
