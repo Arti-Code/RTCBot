@@ -1,5 +1,5 @@
 use std::{sync::Arc, time::Duration};
-use signaler::{client::Client as SignalClient, command::{DescriptionType, generate_description}};
+use signaler::{client::Client as SignalClient, command::{ConnectionType, DescriptionType, generate_description}};
 use bytes::BytesMut;
 use futures::FutureExt;
 use webrtc::{
@@ -115,7 +115,7 @@ pub async fn process_offerer(name: &str, target: &str, server_addr: &str) -> any
     let offer_sdp = pc.local_description().await
     .ok_or_else(|| anyhow::anyhow!("no local description"))?;
     let sdp = serde_json::to_string(&offer_sdp)?;
-    signal_client.send_data(&target, sdp, DescriptionType::Offer).await?;
+    signal_client.send_data(&target, sdp, DescriptionType::Offer, ConnectionType::Data).await?;
     println!("sent offer to {}, waiting for answer...", target);
     let sd = signal_client.wait_data().await?;
     println!("answer received from {}", sd.sender);

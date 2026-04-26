@@ -4,7 +4,7 @@ use webrtc::runtime::block_on;
 use dialoguer::*;
 use colored::*;
 use std::{sync::Arc, time::Duration};
-use signaler::{client::Client as SignalClient, command::DescriptionType};
+use signaler::{client::Client as SignalClient, command::{ConnectionType, DescriptionType}};
 use futures::FutureExt;
 use webrtc::{peer_connection::{
         MediaEngine, PeerConnection, PeerConnectionBuilder, RTCConfigurationBuilder, RTCIceServer, RTCSessionDescription, Registry, register_default_interceptors
@@ -117,7 +117,7 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
         let answer_sdp = pc.local_description().await
         .ok_or_else(|| anyhow::anyhow!("no local description"))?;
         let payload = serde_json::to_string(&answer_sdp)?;
-        signal_client.send_data(&sd.sender, payload, DescriptionType::Answer).await?;
+        signal_client.send_data(&sd.sender, payload, DescriptionType::Answer, ConnectionType::Data).await?;
         println!("answer sent to {}", sd.sender);
         println!("waiting for connection...");
         connected_rx.recv().await;
@@ -139,7 +139,7 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
 fn display_init() {
     let ver = env!("CARGO_PKG_VERSION").to_string();
     let authors = env!("CARGO_PKG_AUTHORS").to_string();
-    let title = format!("-=RTCBot DataChannel=-");
+    let title = format!("-=RTCBot=-");
     let date = "2026y".to_string();
     println!("");
     println!("{}", title.underline().bold().green());

@@ -12,7 +12,7 @@ use webrtc::{media_stream::{MediaStreamTrack, track_local::TrackLocal}, runtime:
 use dialoguer::*;
 use colored::*;
 use std::{sync::Arc, time::Duration};
-use signaler::{client::Client as SignalClient, command::DescriptionType};
+use signaler::{client::Client as SignalClient, command::{ConnectionType, DescriptionType}};
 use futures::FutureExt;
 use webrtc::{media_stream::track_local::static_rtp::TrackLocalStaticRTP, peer_connection::{
     MediaEngine, PeerConnection, PeerConnectionBuilder, RTCConfigurationBuilder, RTCIceServer, RTCSessionDescription, Registry, register_default_interceptors
@@ -166,7 +166,7 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
         let sd1 = pc.local_description().await
         .ok_or_else(|| anyhow::anyhow!("no local description"))?;
         let answer = serde_json::to_string(&sd1)?;
-        signal_client.send_data(&sd0.sender, answer, DescriptionType::Answer).await?;
+        signal_client.send_data(&sd0.sender, answer, DescriptionType::Answer, ConnectionType::Video).await?;
         println!("answer sent to {}", sd0.sender);
 
         let std_listener = std::net::UdpSocket::bind(VIDEO_LISTENER)?;

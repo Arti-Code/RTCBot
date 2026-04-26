@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use signaler::{client::Client as SignalClient, command::DescriptionType};
+use signaler::{client::Client as SignalClient, command::{ConnectionType, DescriptionType}};
 use futures::FutureExt;
 use webrtc::{peer_connection::{
         MediaEngine, PeerConnection, PeerConnectionBuilder, RTCConfigurationBuilder, RTCIceServer, RTCSessionDescription, Registry, register_default_interceptors
@@ -81,7 +81,7 @@ pub async fn process_answerer(name: &str, restart: bool, server_addr: &str) -> a
     let answer_sdp = pc.local_description().await
     .ok_or_else(|| anyhow::anyhow!("no local description"))?;
     let payload = serde_json::to_string(&answer_sdp)?;
-    signal_client.send_data(&sd.sender, payload, DescriptionType::Answer).await?;
+    signal_client.send_data(&sd.sender, payload, DescriptionType::Answer, ConnectionType::Data).await?;
     println!("answer sent to {}", sd.sender);
             
     println!("waiting for connection...");

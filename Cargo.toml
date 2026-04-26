@@ -1,16 +1,15 @@
 [package]
 name = "rtcbot"
-version = "0.8.3"
+version = "0.8.6"
 edition = "2024"
 authors = ["Artur Gwoździowski"]
 
 [dependencies]
 tokio = { version = "1.52.1", features = ["net", "time", "sync", "rt", "rt-multi-thread"] }
-anyhow = "1.0.102"
 ctrlc = "3.5.2"
 serde_json = "1.0.149"
 rand = "0.10.1"
-
+anyhow = "*"
 signaler = {path = "../signaler"}
 bytes = "1.11.1"
 clap = { version = "4.6.1", features = ["derive"] }
@@ -26,14 +25,14 @@ serde = "1.0.228"
 toml = "1.1.2"
 
 [build-dependencies]
-embed-resource = "3.0.8"
+embed-resource = "3.0.9"
 
 [[bin]]
 name="dc"
 path="src/main.rs"
 
 [[bin]]
-name="data"
+name="rtcbot"
 path="src/data.rs"
 
 [[bin]]
@@ -43,11 +42,3 @@ path = "src/logger.rs"
 [[bin]]
 name = "camera"
 path = "src/camera.rs"
-
-[[bin]]
-name = "camera2"
-path = "src/camera2.rs"
-
-[[bin]]
-name = "rpicam"
-path = "src/rpicam.rs"
