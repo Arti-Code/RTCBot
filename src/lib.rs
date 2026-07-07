@@ -1,3 +1,4 @@
+pub mod events;
 pub mod config;
 pub mod answer;
 pub mod event_handler;

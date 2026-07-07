@@ -1,3 +1,2 @@
-#[signaling_server]
 signaling_server = "ws://yamanote.proxy.rlwy.net:25134"
 #signaling_server = "ws://localhost:8080"

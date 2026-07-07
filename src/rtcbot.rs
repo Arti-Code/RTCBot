@@ -102,8 +102,8 @@ async fn async_main(name: String, ctrlc_rx: &mut Receiver<()>) -> Result<bool> {
         .with_udp_addrs(vec![format!("{}:0", get_local_ip())])
         .build().await?;
 
-        let url = "ws://yamanote.proxy.rlwy.net:25134";
-        let mut signal_client = SignalClient::new(&name, url);
+        //let url = "ws://yamanote.proxy.rlwy.net:25134";
+        let mut signal_client = SignalClient::new(&name, &url);
         signal_client.connect().await?;
         println!("{}", "connection ready!".to_string().blue().bold());
         let sd =signal_client.wait_data().await?;

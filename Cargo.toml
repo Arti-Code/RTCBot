@@ -1,31 +1,31 @@
 [package]
 name = "rtcbot"
-version = "0.8.6"
+version = "0.9.1"
 edition = "2024"
 authors = ["Artur Gwoździowski"]
 
 [dependencies]
-tokio = { version = "1.52.1", features = ["net", "time", "sync", "rt", "rt-multi-thread"] }
+tokio = { version = "1.52.3", features = ["net", "time", "sync", "rt", "rt-multi-thread"] }
 ctrlc = "3.5.2"
-serde_json = "1.0.149"
-rand = "0.10.1"
-anyhow = "*"
+serde_json = "1.0.150"
+rand = "0.10.2"
+anyhow = "1.0.103"
 signaler = {path = "../signaler"}
-bytes = "1.11.1"
+bytes = "1.12.0"
 clap = { version = "4.6.1", features = ["derive"] }
 futures = "0.3.32"
 async-trait = "0.1.89"
 dialoguer = "0.12.0"
 colored = "3.1.1"
-webrtc = "=0.20.0-alpha.1"
-rtc = "=0.20.0-alpha.1"
+webrtc = "=0.20.0-rc.1"
+rtc = "=0.20.0-rc.1"
 base64 = "0.22.1"
-env_logger = "0.11.10"
-serde = "1.0.228"
+env_logger = "0.11.11"
+serde = "1.0.218"
 toml = "1.1.2"
 
 [build-dependencies]
-embed-resource = "3.0.9"
+embed-resource = "3.0.11"
 
 [[bin]]
 name="dc"
@@ -33,7 +33,12 @@ path="src/main.rs"
 
 [[bin]]
 name="rtcbot"
-path="src/data.rs"
+path="src/rtcbot.rs"
+
+[[bin]]
+name="rtccam"
+path="src/rtccam.rs"
+
 
 [[bin]]
 name = "logger"
