@@ -1,6 +1,6 @@
 [package]
 name = "rtcbot"
-version = "0.9.1"
+version = "0.9.2"
 edition = "2024"
 authors = ["Artur Gwoździowski"]
 
@@ -39,11 +39,11 @@ path="src/rtcbot.rs"
 name="rtccam"
 path="src/rtccam.rs"
 
+[[bin]]
+name="robot"
+path="src/robot.rs"
+
 
 [[bin]]
 name = "logger"
 path = "src/logger.rs"
-
-[[bin]]
-name = "camera"
-path = "src/camera.rs"
